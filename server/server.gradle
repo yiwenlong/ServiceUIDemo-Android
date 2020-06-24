@@ -1,0 +1,22 @@
+final String SERVER_BRIDGE_PATH = projectDir.getAbsolutePath() + "/src/main/golang/server/bridge"
+final String GOLANG_OUTPUT_BASE = buildDir.getAbsolutePath() + "/intermediates/golang"
+final String GOLANG_OUTPUT_AAR = GOLANG_OUTPUT_BASE + "/server-bridge.aar"
+final String GOLANG_BUILD_SCRIPT= SERVER_BRIDGE_PATH + "/build.sh"
+
+final File bridgeOutDir = file(GOLANG_OUTPUT_BASE)
+
+task assembleGolangServer(type: Exec) {
+    onlyIf {
+        return true
+    }
+    doFirst {
+        if (bridgeOutDir.exists()) {
+            bridgeOutDir.deleteDir()
+        }
+        bridgeOutDir.mkdirs()
+    }
+    doLast {
+    }
+    workingDir(SERVER_BRIDGE_PATH)
+    commandLine(GOLANG_BUILD_SCRIPT, GOLANG_OUTPUT_AAR)
+}
