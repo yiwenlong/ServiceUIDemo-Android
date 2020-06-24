@@ -46,4 +46,5 @@ dependencies {
 
 afterEvaluate {
     tasks.preBuild.dependsOn(tasks.extractGolangServerSources)
+    tasks.clean.dependsOn(tasks.cleanGolangServerSources)
 }

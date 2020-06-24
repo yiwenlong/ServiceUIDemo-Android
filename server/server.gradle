@@ -8,9 +8,6 @@ final String EXTRACT_SOURCE_PATH = buildDir.getAbsolutePath() + "/extraSources"
 final File bridgeOutDir = file(GOLANG_OUTPUT_BASE)
 
 task assembleGolangServer(type: Exec) {
-    onlyIf {
-        return false
-    }
     doFirst {
         if (bridgeOutDir.exists()) {
             bridgeOutDir.deleteDir()
@@ -39,6 +36,7 @@ task extractGolangServerSources(type: Copy) {
     destinationDir = file(EXTRACT_SOURCE_PATH)
 }
 
-task cleanGolangServerSources {
-
+task cleanGolangServerSources(type: Delete) {
+    delete(EXTRACT_SOURCE_PATH)
+    delete(GOLANG_OUTPUT_BASE)
 }
