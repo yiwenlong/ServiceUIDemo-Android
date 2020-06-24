@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/yiwenlong/server"
 	"log"
-	"server"
 	"time"
 )
 
