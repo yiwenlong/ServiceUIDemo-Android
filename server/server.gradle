@@ -9,7 +9,7 @@ final File bridgeOutDir = file(GOLANG_OUTPUT_BASE)
 
 task assembleGolangServer(type: Exec) {
     onlyIf {
-        return true
+        return false
     }
     doFirst {
         if (bridgeOutDir.exists()) {
@@ -22,13 +22,13 @@ task assembleGolangServer(type: Exec) {
     commandLine(GOLANG_BUILD_SCRIPT, GOLANG_OUTPUT_AAR)
 }
 
-task extractSources(type: Copy) {
+task extractGolangServerSources(type: Copy) {
     dependsOn(tasks.assembleGolangServer)
 
     from(zipTree(file(GOLANG_OUTPUT_AAR))) {
         include("**/*.so")
         eachFile {
-            path = path.replace("^jni", "jniLibs/")
+            path = path.replace("jni/", "jniLibs/")
         }
     }
 
@@ -37,4 +37,8 @@ task extractSources(type: Copy) {
         into("classes")
     }
     destinationDir = file(EXTRACT_SOURCE_PATH)
+}
+
+task cleanGolangServerSources {
+
 }
