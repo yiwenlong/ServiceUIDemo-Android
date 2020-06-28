@@ -65,7 +65,6 @@ func counter(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Count %d\n", count)
 }
 
-
 func StopServer(port int) error {
 	if !IsServerRunning(port) {
 		return nil
@@ -82,7 +81,7 @@ func StopServer(port int) error {
 }
 
 func StopAllServer() error {
-	for port, _ := range servers {
+	for port := range servers {
 		if err := StopServer(port); err != nil {
 			return err
 		}
