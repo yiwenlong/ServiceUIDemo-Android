@@ -23,6 +23,12 @@ type ErrorListener interface {
 	OnServerError(msg string)
 }
 
+type MyServerListener interface {
+	StartListener
+	StopListener
+	ErrorListener
+}
+
 type MyServer struct {
 	address        string
 	port           int
@@ -94,6 +100,12 @@ func (serv *MyServer) Stop() {
 		log.Fatalf("Server shut down failed with error: %v\n", err)
 	}
 	log.Printf("Server shut down.")
+}
+
+func (serv *MyServer) RegisterListener(listener MyServerListener) {
+	serv.AddStartListener(listener)
+	serv.AddStopListener(listener)
+	serv.AddErrorListener(listener)
 }
 
 func (serv *MyServer) handler(w http.ResponseWriter, r *http.Request) {

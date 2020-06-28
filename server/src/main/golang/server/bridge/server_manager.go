@@ -5,6 +5,8 @@ import (
 	"log"
 )
 
+var myServer *server.MyServer
+
 type LogHandlerWrapper struct {
 	logHandler ILogHandler
 }
@@ -16,8 +18,18 @@ func (lh *LogHandlerWrapper) Write(log []byte) (int, error) {
 	return len(log), nil
 }
 
-func BootServer(host string, port int) {
-	server.BootServer(host, port)
+func BootServer() {
+	if myServer == nil {
+		log.Fatalf("Server not init!")
+	}
+	myServer.Boot()
+}
+
+func InitServer(host string, port int) {
+	if myServer != nil {
+		myServer.Stop()
+	}
+	myServer = server.NewMyServer(host, port)
 }
 
 func RegisterLogHandler(logHandler ILogHandler) {
@@ -26,10 +38,23 @@ func RegisterLogHandler(logHandler ILogHandler) {
 	})
 }
 
-func StopServer(port int) {
-	server.StopServer(port)
+func RegisterServerListener(listener server.MyServerListener) {
+	if myServer == nil {
+		log.Fatalf("Server not init!")
+	}
+	myServer.RegisterListener(listener)
 }
 
-func StopAllServer() {
-	server.StopAllServer()
+func StopServer() {
+	if myServer == nil {
+		log.Fatalf("Server not init!")
+	}
+	myServer.Stop()
+}
+
+func ServerIsRuning() bool {
+	if myServer == nil {
+		return false
+	}
+	return myServer.IsRunning()
 }

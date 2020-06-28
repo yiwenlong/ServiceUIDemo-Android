@@ -6,16 +6,30 @@ import (
 	"time"
 )
 
-type LogHandler struct {
+type ServerHandler struct {
 }
 
-func (lh *LogHandler) Log(message string) {
+func (lh *ServerHandler) Log(message string) {
 	fmt.Printf("MyLog ==>  %s", message)
 }
 
+func (lh *ServerHandler) OnServerStart() {
+	fmt.Printf("MyLog ==> OnServerStart")
+}
+
+func (lh *ServerHandler) OnServerStop() {
+	fmt.Printf("MyLog ==> OnServerStop")
+}
+
+func (lh *ServerHandler) OnServerError(msg string) {
+	fmt.Printf("MyLog ==> OnServerStop")
+}
+
 func main() {
-	bridge.RegisterLogHandler(&LogHandler{})
-	bridge.BootServer("0.0.0.0", 8080)
+	bridge.RegisterLogHandler(&ServerHandler{})
+	bridge.InitServer("localhost", 8080)
+	bridge.RegisterServerListener(&ServerHandler{})
+	bridge.BootServer()
 	time.Sleep(1 * time.Minute)
-	bridge.StopServer(8080)
+	bridge.StopServer()
 }

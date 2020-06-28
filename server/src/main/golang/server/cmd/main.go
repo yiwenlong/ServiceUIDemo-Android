@@ -18,15 +18,14 @@ func (l *Listener) OnServerStop() {
 	fmt.Printf(">>>> stop <<<<\n")
 }
 
-func (l *Listener) OnServerError() {
+func (l *Listener) OnServerError(msg string) {
 	fmt.Printf(">>>> error <<<<\n")
 }
 
 func main() {
 	myServer := server.NewMyServer("localhost", 8080)
 	listener := Listener{}
-	myServer.AddStartListener(&listener)
-	myServer.AddStopListener(&listener)
+	myServer.RegisterListener(&listener)
 	myServer.Boot()
 	time.Sleep(time.Second)
 	log.Printf("Server is running: %v\n", myServer.IsRunning())
