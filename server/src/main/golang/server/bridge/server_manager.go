@@ -38,7 +38,7 @@ func RegisterLogHandler(logHandler ILogHandler) {
 	})
 }
 
-func RegisterServerListener(listener server.MyServerListener) {
+func RegisterServerListener(listener MyServerListener) {
 	if myServer == nil {
 		log.Fatalf("Server not init!")
 	}
@@ -50,6 +50,7 @@ func StopServer() {
 		log.Fatalf("Server not init!")
 	}
 	myServer.Stop()
+	myServer = nil
 }
 
 func ServerIsRuning() bool {

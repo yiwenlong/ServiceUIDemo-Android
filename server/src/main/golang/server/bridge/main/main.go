@@ -14,15 +14,15 @@ func (lh *ServerHandler) Log(message string) {
 }
 
 func (lh *ServerHandler) OnServerStart() {
-	fmt.Printf("MyLog ==> OnServerStart")
+	fmt.Printf("MyLog ==> OnServerStart\n")
 }
 
 func (lh *ServerHandler) OnServerStop() {
-	fmt.Printf("MyLog ==> OnServerStop")
+	fmt.Printf("MyLog ==> OnServerStop\n")
 }
 
 func (lh *ServerHandler) OnServerError(msg string) {
-	fmt.Printf("MyLog ==> OnServerStop")
+	fmt.Printf("MyLog ==> OnServerStop\n")
 }
 
 func main() {
