@@ -21,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.stop).setOnClickListener(view -> {
             Intent i = new Intent(getApplicationContext(), ServerManagerService.class);
-            stopService(i);
+            i.putExtra("start", false);
+            startService(i);
         });
     }
 }

@@ -12,10 +12,11 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-public class ServerManagerService extends Service {
+import bridge.MyServerListener;
+
+public class ServerManagerService extends Service implements MyServerListener {
 
     private static final String CHANNEL_ID = "channel id";
-    private static final String CHANNEL_NAME = "channel name";
 
     @Override
     public void onCreate() {
@@ -38,8 +39,6 @@ public class ServerManagerService extends Service {
                 .setGroup(CHANNEL_ID)
                 .build();
         startForeground(256, notification);
-
-        bridge.Bridge.registerLogHandler(s -> Log.i("MyDemoGolangServer", s));
     }
 
     @Nullable
@@ -50,13 +49,36 @@ public class ServerManagerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        bridge.Bridge.bootServer("0.0.0.0", 8080);
+        boolean isStart = intent.getBooleanExtra("start", true);
+        if (isStart) {
+            bridge.Bridge.initServer("0.0.0.0", 8080);
+            bridge.Bridge.registerLogHandler(s -> Log.i("MyDemoGolangServer", s));
+            bridge.Bridge.registerServerListener(this);
+            bridge.Bridge.bootServer();
+        } else {
+            bridge.Bridge.stopServer();
+        }
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
-        bridge.Bridge.stopServer(8080);
         super.onDestroy();
+    }
+
+    @Override
+    public void onServerError(String msg) {
+        Log.e("MyServerBirdge", "onServerError -> " + msg);
+    }
+
+    @Override
+    public void onServerStart() {
+        Log.e("MyServerBirdge", "onServerStart");
+    }
+
+    @Override
+    public void onServerStop() {
+        Log.e("MyServerBirdge", "onServerStop");
+        stopSelf();
     }
 }
