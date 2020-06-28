@@ -38,6 +38,8 @@ public class ServerManagerService extends Service {
                 .setGroup(CHANNEL_ID)
                 .build();
         startForeground(256, notification);
+
+        bridge.Bridge.registerLogHandler(s -> Log.i("MyDemoGolangServer", s));
     }
 
     @Nullable
