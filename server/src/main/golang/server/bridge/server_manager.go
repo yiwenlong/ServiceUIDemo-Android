@@ -3,6 +3,7 @@ package bridge
 import (
 	"github.com/yiwenlong/server"
 	"log"
+	"os"
 )
 
 var myServer *server.MyServer
@@ -38,11 +39,21 @@ func RegisterLogHandler(logHandler ILogHandler) {
 	})
 }
 
+func UnRegisterLogHandler() {
+	log.SetOutput(os.Stderr)
+}
+
 func RegisterServerListener(listener MyServerListener) {
 	if myServer == nil {
 		log.Fatalf("Server not init!")
 	}
 	myServer.RegisterListener(listener)
+}
+
+func ClearServerListeners() {
+	if myServer != nil {
+		myServer.ClearListeners()
+	}
 }
 
 func StopServer() {
